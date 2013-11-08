@@ -4,16 +4,16 @@ import aluguer.Kartodromo;
 import consola.SConsola;
 
 /**
- * Classe responsável pela apresentaçãoe
- * processamento do menu principal da aplicação
+ * Classe responsÃ¡vel pela apresentaÃ§Ã£oe
+ * processamento do menu principal da aplicaÃ§Ã£o
  * @author <por aqui nomes dos autores>
  */
 public class MenuAluguer {
 
-	// a consola responsável pela janela da aplicação
+	// a consola responsÃ¡vel pela janela da aplicaÃ§Ã£o
 	private SConsola aConsola;
 	
-	// o kartrodromo sobre o qual se está a trabalhar
+	// o kartrodromo sobre o qual se estÃ¡ a trabalhar
 	private Kartodromo kartodromo;   
 	
 	public MenuAluguer( Kartodromo k, int x, int y, int comp, int alt ){
@@ -22,7 +22,7 @@ public class MenuAluguer {
 		
 		kartodromo = k;
 		
-		// criar uma nova thread para poder ter várias janelas ao mesmo tempo
+		// criar uma nova thread para poder ter vÃ¡rias janelas ao mesmo tempo
 		Thread t = new Thread(){			
 			public void run() {
 				menuPrincipal();
@@ -32,7 +32,7 @@ public class MenuAluguer {
 	}
 
 	/** 
-	 * método que apresenta o menu principal da aplicação
+	 * mÃ©todo que apresenta o menu principal da aplicaÃ§Ã£o
 	 */
 	public void menuPrincipal(){
 		String menu = "Karts na EST - aluguer de karts\n\n" + 
@@ -40,7 +40,7 @@ public class MenuAluguer {
 		              "A - novo Aluguer\n" + 
 		              "K - ver Karts alugados\n" + 
 		              "V - Ver piloto\n" + 
-		              "F - Fechar mês\n" +
+		              "F - Fechar mÃªs\n" +
 		              "X - sair\n\n";
 		char op;
 		do {
@@ -66,7 +66,7 @@ public class MenuAluguer {
 				case 'X':
 					break;
 				default:
-					aConsola.println("Opção Inválida\n\n");
+					aConsola.println("OpÃ§Ã£o InvÃ¡lida\n\n");
 					break;
 			}
 		} while( op != 'X');
@@ -79,7 +79,7 @@ public class MenuAluguer {
 	 */
 	private void criarPiloto() {
 		aConsola.clear();
-		aConsola.println("Menu de criação de piloto\n\n"); 
+		aConsola.println("Menu de criaÃ§Ã£o de piloto\n\n"); 
 
 		aConsola.print("Nome do Piloto? ");
 		String nome = aConsola.readLine();
@@ -94,7 +94,7 @@ public class MenuAluguer {
 		case 'C': break;		
 		case 'R': break;
 		case 'F': break;
-		default: aConsola.println("escolha inválida");
+		default: aConsola.println("escolha invÃ¡lida");
 				 aConsola.readLine();
 				 return;
 		}		
@@ -107,13 +107,13 @@ public class MenuAluguer {
 	 */
 	private void novoAluguer() {
 		aConsola.clear();		
-		aConsola.println( "Menu de criação de sessão\n\n");
+		aConsola.println( "Menu de criaÃ§Ã£o de sessÃ£o\n\n");
 		
 		// pedir o piloto
 		// pedir o piloto
 		// pedir o piloto
 		
-		aConsola.println("Número de voltas? ");
+		aConsola.println("NÃºmero de voltas? ");
 		int nVoltas = aConsola.readInt();
 		
 		aConsola.println( "Vai custar : <CUSTO>" );
@@ -128,76 +128,76 @@ public class MenuAluguer {
 			// apresentar karts livres
 			// apresentar karts livres
 
-			aConsola.println("Número do kart? ");
+			aConsola.println("NÃºmero do kart? ");
 			int kart = aConsola.readInt();
 			
-			if( false /*kart não existe ou está indisponível */ )
-				aConsola.println("Kart não disponível, escolha um disponível");
-		} while( false /*kart não existe ou está indisponível */ );
+			if( false /*kart nÃ£o existe ou estÃ¡ indisponÃ­vel */ )
+				aConsola.println("Kart nÃ£o disponÃ­vel, escolha um disponÃ­vel");
+		} while( false /*kart nÃ£o existe ou estÃ¡ indisponÃ­vel */ );
 		
-		// começar o aluguer do kart pelo piloto
-		// começar o aluguer do kart pelo piloto
-		// começar o aluguer do kart pelo piloto		
+		// comeÃ§ar o aluguer do kart pelo piloto
+		// comeÃ§ar o aluguer do kart pelo piloto
+		// comeÃ§ar o aluguer do kart pelo piloto		
 	}
 
 	/**
-	 * Pede o número do piloto e devolve o piloto associado
-	 * @return o piloto indicado pelo número do operador
+	 * Pede o nÃºmero do piloto e devolve o piloto associado
+	 * @return o piloto indicado pelo nÃºmero do operador
 	 */
 	private Object pedirPiloto() {
 		Object p = null;
 		do {
-			aConsola.println( "Número do piloto? (0 para único)? ");
+			aConsola.println( "NÃºmero do piloto? (0 para Ãºnico)? ");
 			int idPiloto = aConsola.readInt();
 			 
-		} while( /* piloto não existe */ false );
+		} while( /* piloto nÃ£o existe */ false );
 		return p;
 	}
 
 	/**
-	 * ver quais os karts que estão alugados
+	 * ver quais os karts que estÃ£o alugados
 	 */
 	private void verKartsAlugados() {
 		aConsola.clear();
-		aConsola.println("Karts alugados - <Número de karts alugados>" );
+		aConsola.println("Karts alugados - <NÃºmero de karts alugados>" );
 		
 		/* para todos os karts alugados */ {
-			aConsola.println( "Kart: <Número>" + " piloto: <Nome>" + 
-					          "  voltas pedidas: <Número>" + "  dadas: <Número>" );			
+			aConsola.println( "Kart: <NÃºmero>" + " piloto: <Nome>" + 
+					          "  voltas pedidas: <NÃºmero>" + "  dadas: <NÃºmero>" );			
 		}
 		aConsola.readLine();
 	}
 
 	/**
-	 *  ver as informações de um piloto
+	 *  ver as informaÃ§Ãµes de um piloto
 	 */
 	private void verPiloto() {
 		aConsola.clear();		
-		aConsola.println( "Informações sobre piloto");
+		aConsola.println( "InformaÃ§Ãµes sobre piloto");
 		// pedir o piloto
 		// pedir o piloto
 		// pedir o piloto
 
 		aConsola.println("Nome: <nome do piloto>" );
 		aConsola.println("Melhor volta: <TEMPO>" +
-				         " no kart <NÚMERO KART>"  );
+				         " no kart <NÃšMERO KART>"  );
 		aConsola.println("Tempos ---------" );
 		/** para todos os tempos */
-			aConsola.println( "<NÚMERO KART> - <TEMPO>" );
+			aConsola.println( "<NÃšMERO KART> - <TEMPO>" );
 		
 		aConsola.readLine();
 	}
 
 	/**
-	 * fecha o mês e arranca com o próximo
+	 * fecha o mÃªs e arranca com o prÃ³ximo
 	 */
 	private void fecharMes() {
 		aConsola.clear();		
-		aConsola.println( "Fechando o mês");
+		aConsola.println( "Fechando o mÃªs");
 		
-		/* fechar o mês para todos os pilotos */
-		/* fechar o mês para todos os pilotos */
-		/* fechar o mês para todos os pilotos */
+		/* fechar o mÃªs para todos os pilotos */
+		/* fechar o mÃªs para todos os pilotos */
+		/* fechar o mÃªs para todos os pilotos */
 		
 		aConsola.readLine();
 	}

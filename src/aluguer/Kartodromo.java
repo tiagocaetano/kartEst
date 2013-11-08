@@ -5,7 +5,7 @@ package aluguer;
  */
 public class Kartodromo {
 
-	// indicação de qual o próximo número para o piloto
+	// indicaÃ§Ã£o de qual o prÃ³ximo nÃºmero para o piloto
 	private int proxIdPiloto = 9;
 	
 	public Kartodromo(){		

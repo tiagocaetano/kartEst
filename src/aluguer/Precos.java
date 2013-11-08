@@ -1,9 +1,9 @@
 package aluguer;
 
 /**
- * Esta classe tem os preÁos praticados pelo kartodromo.
- * Devem fazer com que n„o seja necess·rio alterar esta
- * classe se os preÁos forem alterados.
+ * Esta classe tem os pre√ßos praticados pelo kartodromo.
+ * Devem fazer com que n√£o seja necess√°rio alterar esta
+ * classe se os pre√ßos forem alterados.
  */
 public class Precos {
 	public static final double ALUGUER_VOLTA = 1;
