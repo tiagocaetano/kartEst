@@ -18,7 +18,7 @@ public class Volta {
      * @param piloto
      * @param destino 
      */
-    public Volta( int piloto, String destino ){
+    public Volta( int piloto ){
             this.piloto = piloto;
             voltas = 0;
     }

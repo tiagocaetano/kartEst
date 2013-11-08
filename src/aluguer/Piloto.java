@@ -9,13 +9,13 @@ import java.util.Vector;
 /**
  *
  * @author lca
- */
+ */ 
 public class Piloto {
     
-    private String numero;                               	// Número do piloto
+        private int id;                               	// Número do piloto
 	private Vector<Volta> asVoltas = new Vector<Volta>();   // Voltas efectudas
-	private Precos preco;                             	// Tarifário de piloto
-
+	private Precos tarif;                             	// Tarifário de piloto
+        private Volta curVolta;
 	private int saldo;                                  	// Voltas ainda permitidas ao Piloto
 
 	private boolean aCorrer = false;                      	// indicação se o utilizador está a correr
@@ -28,9 +28,9 @@ public class Piloto {
 	 * @param tarif tarifário associado ao utilizador
 	 * @param saldo saldo inicial do utilizador
 	 */
-	public Piloto( String num, Precos preco, int saldo ){
-		numero = num;
-		this.preco = preco;
+	public Piloto( int id, Precos tarif, int saldo ){
+		this.id= id;
+		this.tarif = tarif;
 		this.saldo = saldo;
 	}
 
@@ -46,31 +46,23 @@ public class Piloto {
 	 * Devolve o número do piloto
 	 * @return o número do piloto
 	 */
-	public String getNumero() {
-		return numero;
-	}
-
-	/**
-	 * Altera o número associado ao piloto
-	 * @param numero novo número
-	 */
-	public void setNumero(String numero) {
-		this.numero = numero;
+	public int getId() {
+		return id;
 	}
 
 	/**
 	 * Devolve o tarifário aplicada ao piloto
 	 * @return o tarifário aplicado ao piloto
 	 */
-	public Preco getTarifario() {
-		return Preco;
+	public Precos getTarifario() {
+		return tarif;
 	}
 
 	/**
 	 * Aplica um novo tarifário ao utilizador
 	 * @param tarif novo tarifário a aplicar
 	 */
-	public void setTarifario(Tarifario tarif) {
+	public void setTarifario(Precos tarif) {
 		this.tarif = tarif;
 	}
 
@@ -100,14 +92,13 @@ public class Piloto {
 	}
 
 	/**
-	 * Realiza uma chamada para o número de destino
-	 * @param destino número para quem ligar
-	 * @return a chamada que fica activa 
+	 * Inicia prova
+	 * @return devolve a prova activa
 	 */
-	public Chamada fazChamada( String destino ){
+	public Volta iniciaProva(){
 		// cria uma nova chamada
-		chamadaActiva = new Chamada( numero, destino );
-		aFalar = true;			
+		curVolta = new Volta( id );
+		aCorrer = true;			
 
 		// NÃO ALTERAR ESTE CÓDIGO, OU ALTERAR COM MUITO MUITO CUIDADO		
 		Thread contador = new Thread(){
@@ -116,16 +107,16 @@ public class Piloto {
 				int bloco = 0; // iniciar o contador de blocos
 
 				// enquanto o utilizador estiver a falar
-				while( aFalar ){
+				while( aCorrer ){
 
 					// cobrar o preço correspondente ao bloco de tempo
-					tarif.cobrar( bloco, Utilizador.this, chamadaActiva );									
+					//tarif.cobrar( bloco, Piloto.this, curVolta );									
 
 					// esperar para ver se no fim do bloco de tempo ainda está a falar
 					// o tempo de espera depende do tempo do bloco
 					try {
 						// multiplicar o tempo do bloco por 1000 porque o sleep aceita milisegundos
-						sleep( tarif.getPeriodoTaxacao( bloco ) * 1000 );
+						//sleep( tarif.getPeriodoTaxacao( bloco ) * 1000 );
 
 					} catch (InterruptedException e) {
 					}
@@ -138,27 +129,16 @@ public class Piloto {
 		contador.start();  // iniciar a contagem - NÃO RETIRAR ISTO DAQUI DE FORMA ALGUMA
 		
 		// retornar a chamada activa
-		return chamadaActiva;
+		return curVolta;
 	}
 
-	/**
-	 * Para a chamada que o utilzidor está a realizar
-	 */
-	public void paraChamada(){
-		if( !aFalar )                     // se não estiver a falar não faz nada
-			return;
-
-		aFalar = false;                   // deixa de falar		
-		asChamadas.add( chamadaActiva );  // adiciona a chamada activa à lista de chamads realizadas
-		chamadaActiva = null;             // fica sem chamada activa
-	}
 
 	/**
 	 * Devolve a chamada activa
 	 * @return a chamada activa
 	 */
 	public Object getChamadaActiva() {		
-		return chamadaActiva;
+		return curVolta;
 	}
 	
 	
