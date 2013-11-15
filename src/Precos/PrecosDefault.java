@@ -11,7 +11,7 @@ package Precos;
 public abstract class PrecosDefault implements Precos{
 	
 	private short voltas;
-	private boolean pagoumes = false;
+	private boolean pagames = true;
 	
 	/**
 	 * Nome da Assinatura
@@ -21,12 +21,6 @@ public abstract class PrecosDefault implements Precos{
 	public String getNome(){
 		return this.getClass().getName();
 	}
-	
-	/**
-	 * Custo da assinatura mensal
-	 * @return 
-	 */
-	public abstract short getCusto();
 	
 	/**
 	 * Custo da aquisição de voltas

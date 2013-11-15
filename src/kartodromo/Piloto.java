@@ -11,24 +11,28 @@ import Precos.*;
  * @author lca
  */ 
 public class Piloto {
-    
-	private int id;												// Número do piloto
-	private String nome;										// Nome do piloto
+    private static short pilotcount=0;				// Contagem de pilotos
+	private int id;									// Número do piloto
+	private String nome;							// Nome do piloto
 	private Precos tarif;
-	private int saldo;											// Voltas ainda permitidas ao Piloto
-	private boolean aCorrer = false;							// indicação se o utilizador está prova
-	private int melhorTempo;									// Melhor tempo efectuado, se houver
+	private boolean aCorrer = false;				// Indicação se o utilizador está prova
 
 	/**
-	 * Cria um utilizador com um determinado número, tarifário e saldo 
-	 * @param num número associado ao utilizador
+	 * Cria um Piloto
+	 * @param nome nome associado ao utilizador
 	 * @param tarif tarifário associado ao utilizador
-	 * @param saldo saldo inicial do utilizador
 	 */
-	public Piloto( int id, Precos tarif, int saldo ){
-		this.id= id;
+	public Piloto(String nome, Precos tarif){
+		this.nome= nome;
 		this.tarif = tarif;
-		this.saldo = saldo;
+	}
+	
+	/**
+	 * Devolve o nome do piloto
+	 * @return 
+	 */
+	public String getNome(){
+		return nome;
 	}
 
 	/**
@@ -43,7 +47,7 @@ public class Piloto {
 	 * Devolve o tarifário aplicada ao piloto
 	 * @return o tarifário aplicado ao piloto
 	 */
-	public Precos getTarifario() {
+	public Precos getAssinatura() {
 		return tarif;
 	}
 
@@ -51,7 +55,7 @@ public class Piloto {
 	 * Aplica um novo tarifário ao utilizador
 	 * @param tarif novo tarifário a aplicar
 	 */
-	public void setTarifario(Precos tarif) {
+	public void setAssinatura(Precos tarif) {
 		this.tarif = tarif;
 	}
 
@@ -59,8 +63,8 @@ public class Piloto {
 	 * devolve o saldo do utilizador
 	 * @return o número de voltas ainda permitidas ao utilizador
 	 */
-	public long getSaldo() {
-		return saldo;
+	public long getAvVoltas() {
+		return tarif.getAvVoltas();
 	}
 
 	/**
