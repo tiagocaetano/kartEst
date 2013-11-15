@@ -17,7 +17,7 @@ public class Kartodromo {
 	
 	private ArrayList<Precos> precos = new ArrayList<>();	// Lista de Preços disponíveis
 	private ArrayList<Piloto> pilotos = new ArrayList<>();	// Lista de Pilotos registados incluindo piloto 'zero'
-	private Queue<Kart> kPark = new LinkedList<>();			// Karts disponíveis no parque
+	private ArrayList<Kart> kPark = new ArrayList<>();		// Karts disponíveis no parque
 	private Queue<Kart> kRunn = new LinkedList<>();			// Karts em prova
 	
 	
