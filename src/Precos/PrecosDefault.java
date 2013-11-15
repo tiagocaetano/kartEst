@@ -12,6 +12,25 @@ public abstract class PrecosDefault implements Precos{
 	
 	private short voltas;
 	private boolean pagames = true;
+	private Volta melhorVolta;
+			
+	private class Volta {
+		short kartID;
+		short tempo;
+		
+		public Volta(short kart, short tempo){
+			this.kartID=kart;
+			this.tempo=tempo;
+		}
+		
+		public short getTempo(){
+			return tempo;
+		}
+		
+		public short getKart(){
+			return kartID;
+		}
+	}
 	
 	/**
 	 * Nome da Assinatura
@@ -32,8 +51,8 @@ public abstract class PrecosDefault implements Precos{
 	 * Devolve a melhor volta
 	 * @return 
 	 */
-	public short getMelhorVolta() {
-		return 999;
+	public Volta getMelhorVolta() {
+		return melhorVolta;
 	}
 	
 	/**
