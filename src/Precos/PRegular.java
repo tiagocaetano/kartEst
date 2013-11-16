@@ -46,4 +46,10 @@ public class PRegular extends PDefault{
 		this.pagames = true;
 		this.asVoltas.clear();
 	}
+	
+	@Override
+	public String toString(){
+		String str=super.toString();
+		return str;
+	}
 }

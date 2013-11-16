@@ -31,4 +31,9 @@ public class PCronometrado extends PDefault{
 		this.asVoltas.clear();
 	}
 
+	@Override
+	public String toString(){
+		String str=super.toString();
+		return str;
+	}
 }
