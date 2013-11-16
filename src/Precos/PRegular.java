@@ -11,6 +11,8 @@ package Precos;
 import java.util.ArrayList;
 
 public class PRegular extends PDefault{
+	private static final double MENSALIDADE = 10;
+	
 	private boolean pagames = true;
 	private ArrayList<Volta> asVoltas = new ArrayList<>();
 	
@@ -20,18 +22,22 @@ public class PRegular extends PDefault{
 	}
 
 	@Override
-	public double getCusto(int voltas) {
-		throw new UnsupportedOperationException("Not supported yet."); 
+	public final double getCusto(int voltas) {
+		// duas voltas grátis por cada 10 no aluguer
+		return (pagames ? MENSALIDADE : 0 ) + voltas - voltas/10 * 2;
 	}
 
 	@Override
 	public void alugarVoltas(int voltas) throws PrecosException {
-		throw new UnsupportedOperationException("Not supported yet."); 
+		// considera a mensalidade paga
+		pagames = false;
+		super.alugarVoltas(voltas);
 	}
 	
 	@Override
 	public void finalizaVolta(Volta volta) throws PrecosException {
 		super.finalizaVolta(volta);
+		setMelhorVolta(volta);
 		asVoltas.add(volta);
 	}
 	

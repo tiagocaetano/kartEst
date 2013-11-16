@@ -31,6 +31,12 @@ public interface Precos {
 	public Volta getMelhorVolta();
 	
 	/**
+	 * Define a melhor volta
+	 * @param volta 
+	 */
+	public void setMelhorVolta(Volta volta);
+	
+	/**
 	 * Voltas disponíveis no plafond
 	 * @return 
 	 */

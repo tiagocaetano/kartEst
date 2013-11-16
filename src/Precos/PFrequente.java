@@ -13,6 +13,10 @@ import java.util.ArrayList;
  * @author lca
  */
 public class PFrequente extends PDefault{
+	private static final double MENSALIDADE = 130;
+	private static final int BONUS = 200;
+	
+	private int saldo=0;
 	private boolean pagames = true;
 	private ArrayList<Volta> asVoltas = new ArrayList<>();
 	
@@ -23,16 +27,36 @@ public class PFrequente extends PDefault{
 	
 	@Override
 	public double getCusto(int voltas) {
-		throw new UnsupportedOperationException("Not supported yet."); 
+		double total;
+		if (pagames) {
+			total = MENSALIDADE + (BONUS < voltas ? 0 : voltas-BONUS);
+		} else {
+			total = (saldo < voltas ? 0 : voltas-saldo);
+		}
+		return total;
 	}
 
 	@Override
 	public void alugarVoltas(int voltas) throws PrecosException {
-		this.pagames = false;
+		if(pagames){
+			this.pagames = false;
+			saldo = BONUS - voltas;
+		} else {
+			saldo = (saldo < voltas ? 0 : saldo-voltas);
+		}
+		super.alugarVoltas(voltas);
+	}
+	
+	@Override
+	public void finalizaVolta(Volta volta) throws PrecosException {
+		super.finalizaVolta(volta);
+		setMelhorVolta(volta);
+		asVoltas.add(volta);
 	}
 	
 	@Override
 	public void finalizaMes(){
+		saldo=0;
 		this.pagames = true;
 		this.asVoltas.clear();
 	}

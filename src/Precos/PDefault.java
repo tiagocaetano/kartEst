@@ -37,8 +37,15 @@ public class PDefault implements Precos{
 	 * @return 
 	 */
 	@Override
-	public Volta getMelhorVolta() {
+	public final Volta getMelhorVolta() {
 		return melhorVolta;
+	}
+	
+	@Override
+	public final void setMelhorVolta(Volta volta) { 
+		if (melhorVolta.compareTo(volta) > 0){
+			melhorVolta = volta;
+		}
 	}
 
 	/**
@@ -70,9 +77,6 @@ public class PDefault implements Precos{
 			throw new PrecosException("Limite de Voltas atingido");
 		}else {
 			voltas--;
-			if (melhorVolta.compareTo(volta) < 0){
-				melhorVolta = volta;
-			}
 		}
 	}
 	
