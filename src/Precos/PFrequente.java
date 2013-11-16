@@ -1,24 +1,26 @@
 /*
- * To change this template, choose Tools | Templates
+ * To change this license header, choose License Headers in Project Properties.
+ * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
+
 package Precos;
+
+import java.util.ArrayList;
 
 /**
  *
  * @author lca
  */
-import java.util.ArrayList;
-
-public class PRegular extends PDefault{
+public class PFrequente extends PDefault{
 	private boolean pagames = true;
 	private ArrayList<Volta> asVoltas = new ArrayList<>();
 	
 	@Override
 	public String getNome(){
-		return "Regular";
+		return "Frequente";
 	}
-
+	
 	@Override
 	public double getCusto(int voltas) {
 		throw new UnsupportedOperationException("Not supported yet."); 
@@ -26,13 +28,7 @@ public class PRegular extends PDefault{
 
 	@Override
 	public void alugarVoltas(int voltas) throws PrecosException {
-		throw new UnsupportedOperationException("Not supported yet."); 
-	}
-	
-	@Override
-	public void finalizaVolta(Volta volta) throws PrecosException {
-		super.finalizaVolta(volta);
-		asVoltas.add(volta);
+		this.pagames = false;
 	}
 	
 	@Override

@@ -12,7 +12,7 @@ import Precos.*;
  */ 
 public class Piloto {
     private static short pilotcount=0;				// Contagem de pilotos
-	private int id;									// Número do piloto
+	private short id;								// Número do piloto
 	private String nome;							// Nome do piloto
 	private Precos tarif;
 	private boolean aCorrer = false;				// Indicação se o utilizador está prova
@@ -23,8 +23,9 @@ public class Piloto {
 	 * @param tarif tarifário associado ao utilizador
 	 */
 	public Piloto(String nome, Precos tarif){
-		this.nome= nome;
+		this.nome = nome;
 		this.tarif = tarif;
+		this.id = Piloto.pilotcount++;
 	}
 	
 	/**
@@ -44,15 +45,15 @@ public class Piloto {
 	}
 
 	/**
-	 * Devolve o tarifário aplicada ao piloto
-	 * @return o tarifário aplicado ao piloto
+	 * Devolve a assinatura aplicada ao piloto
+	 * @return assinatura
 	 */
 	public Precos getAssinatura() {
 		return tarif;
 	}
 
 	/**
-	 * Aplica um novo tarifário ao utilizador
+	 * Aplica um novo tipo de assinatura ao piloto
 	 * @param tarif novo tarifário a aplicar
 	 */
 	public void setAssinatura(Precos tarif) {
@@ -60,28 +61,27 @@ public class Piloto {
 	}
 
 	/**
-	 * devolve o saldo do utilizador
-	 * @return o número de voltas ainda permitidas ao utilizador
+	 * Número de voltas ainda permitidas ao piloto
+	 * @return o número de voltas
 	 */
 	public long getAvVoltas() {
 		return tarif.getAvVoltas();
 	}
-
-	/**
-	 * altera o saldo 
-	 * @param saldo
-	 */
-	public void setSaldo(int saldo) {
-            if (saldo>0) {
-                this.saldo = saldo;
-            }
+	
+	public void terminaVolta(Volta volta){
+		tarif.finalizaVolta(volta);
 	}
 	
-	
+	public void finalizaMes(){
+		tarif.finalizaMes();
+	}
+	@Override
 	public String toString(){
-		return "Piloto: " + id + "\n" +
-				"Tarifario: " + tarif.getNome() + "\n" +
-				"Saldo: " + saldo + " voltas\n";
+		Volta v = tarif.getMelhorVolta();
+		return "Piloto: [" + id + "] " + nome + "\n" +
+				"Melhor Tempo: " + v.getTempo() + " no kart [" +v.getKartID()+ "]\n" +
+				"Tipo de Assinatura: " + tarif.getNome() + "\n" +
+				"Voltas disponíveis: " + tarif.getAvVoltas() + " voltas.\n";
 	}
     
 }

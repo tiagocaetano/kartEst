@@ -1,21 +1,19 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
+
 package kartodromo;
 /**
  *
  * @author lca
  */
+import Precos.Volta;
+
 public class Kart {
 	private Piloto piloto;
-	private static short count=0;
-	private short kartID;
+	private static int count=0;
+	private int kartID;
 	
 	public Kart(){
-		piloto=null;
-		count++;
-		kartID=count;
+		piloto = null;
+		kartID = Kart.count++;
 	}
 	
 	public void assignPiloto(Piloto piloto){
@@ -24,5 +22,11 @@ public class Kart {
 	
 	public void removePiloto(){
 		this.piloto = null;
+	}
+	
+	public void terminaVolta(Volta volta){
+		if (piloto != null) {
+			piloto.terminaVolta(volta);
+		}
 	}
 }
