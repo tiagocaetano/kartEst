@@ -8,13 +8,8 @@ package Precos;
  *
  * @author lca
  */
-import java.util.ArrayList;
-
-public class PRegular extends PDefault{
+public class PRegular extends PFrequente {
 	private static final double MENSALIDADE = 10;
-	
-	private boolean pagames = true;
-	private ArrayList<Volta> asVoltas = new ArrayList<>();
 	
 	@Override
 	public String getNome(){
@@ -22,34 +17,15 @@ public class PRegular extends PDefault{
 	}
 
 	@Override
-	public final double getCusto(int voltas) {
+	public double getCusto(int voltas) {
 		// duas voltas grátis por cada 10 no aluguer
-		return (pagames ? MENSALIDADE : 0 ) + voltas - voltas/10 * 2;
-	}
-
-	@Override
-	public void alugarVoltas(int voltas) throws PrecosException {
-		// considera a mensalidade paga
-		pagames = false;
-		super.alugarVoltas(voltas);
-	}
-	
-	@Override
-	public void finalizaVolta(Volta volta) throws PrecosException {
-		super.finalizaVolta(volta);
-		setMelhorVolta(volta);
-		asVoltas.add(volta);
+		// mensalidade de 10 euros
+		return (mensalidade() ? MENSALIDADE : 0 ) + voltas - voltas/10 * 2;
 	}
 	
 	@Override
 	public void finalizaMes(){
-		this.pagames = true;
-		this.asVoltas.clear();
-	}
-	
-	@Override
-	public String toString(){
-		String str=super.toString();
-		return str;
+		super.finalizaMes();
+		clearTempos();
 	}
 }

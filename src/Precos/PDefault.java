@@ -10,9 +10,14 @@ package Precos;
  */
 public class PDefault implements Precos{
 	
-	private Volta melhorVolta = new Volta(0, 999.999);
+	private Volta melhorVolta;
 	private int voltas;
+	private boolean pagames;
 	
+	public PDefault(){
+		melhorVolta = new Volta(0, 999.999);
+		pagames = true;
+	}
 	/**
 	 * Nome da Assinatura
 	 * @return 
@@ -21,6 +26,12 @@ public class PDefault implements Precos{
 	public String getNome(){
 		return "Ocasional";
 	}
+	
+	/**
+	 * Verifica se a mensalidade está paga
+	 * @return 
+	 */
+	public final boolean mensalidade() { return pagames; }
 	
 	/**
 	 * Custo da aquisição de voltas
@@ -63,6 +74,7 @@ public class PDefault implements Precos{
 	 */
 	@Override
 	public void alugarVoltas(int voltas) {
+		pagames = false;
 		this.voltas = voltas;
 	}
 	
@@ -82,7 +94,7 @@ public class PDefault implements Precos{
 	
 	@Override
 	public void finalizaMes(){ 
-		// Neste caso, não é necessário fazer nada
+		pagames = true;
 	}
 	
 	public String toString(){
