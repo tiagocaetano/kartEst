@@ -30,6 +30,8 @@ public class Kartodromo {
 			kPark.add(new Kart());
 		}
 		// criar o piloto não registado com o número 0
+		// criar o piloto nao registado com id igual zero
+	     pilotos.add(0,new Piloto("Piloto Zero", new PDefault()));
 		
 		// criação das interfaces do sistema
 		oMenu =  new SConsola("EST.Karts - Menu", 550, 500); 
