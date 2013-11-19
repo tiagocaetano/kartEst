@@ -96,10 +96,10 @@ public class Kartodromo {
 	 */
 	private void criarPiloto() {
 		oMenu.clear();
-		oMenu.println("Menu de criação de piloto\n\n"); 
-
+		oMenu.println("Menu de Criacção Piloto\n\n"); 
+	
 		oMenu.print("Nome do Piloto? ");
-		String nome = oMenu.readLine();
+		String nome = oMenu.readLine();// armazena nome do piloto
 
 		oMenu.println( "Escolha o tipo de piloto\n\n" +
 					      "C - Cronometrado\n" + 
@@ -108,13 +108,21 @@ public class Kartodromo {
 		int id = getProxPilotoId();
 		char op = Character.toUpperCase( oMenu.readChar() );
 		switch( op ){
-			case 'C': break;		
-			case 'R': break;
-			case 'F': break;
-			default: oMenu.println("escolha inválida");
+			case 'C':pilotos.add(id, new Piloto(nome, new PCronometrado()));	//cria piloto Cronometrado	
+			break;
+			
+			case 'R':pilotos.add(id,new Piloto(nome, new PRegular()));//cria piloto Regular
+			break;
+			
+			case 'F':pilotos.add(id,new Piloto(nome, new PFrequente()));//cria piloto Frequente
+			break;
+			
+			default: oMenu.println("escolha invalida");
 					 oMenu.readLine();
 					 return;
-		}		
+					 
+		}	
+	
 		oMenu.println("Piloto criado com id: " + id);
 		oMenu.readLine();
 	}
