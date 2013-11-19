@@ -11,24 +11,29 @@ import Precos.*;
  * @author lca
  */ 
 public class Piloto {
-    
-	private int id;												// Número do piloto
-	private String nome;										// Nome do piloto
+    private static short pilotcount=0;				// Contagem de pilotos
+	private short id;								// Número do piloto
+	private String nome;							// Nome do piloto
 	private Precos tarif;
-	private int saldo;											// Voltas ainda permitidas ao Piloto
-	private boolean aCorrer = false;							// indicação se o utilizador está prova
-	private int melhorTempo;									// Melhor tempo efectuado, se houver
+	private boolean aCorrer = false;				// Indicação se o utilizador está prova
 
 	/**
-	 * Cria um utilizador com um determinado número, tarifário e saldo 
-	 * @param num número associado ao utilizador
+	 * Cria um Piloto
+	 * @param nome nome associado ao utilizador
 	 * @param tarif tarifário associado ao utilizador
-	 * @param saldo saldo inicial do utilizador
 	 */
-	public Piloto( int id, Precos tarif, int saldo ){
-		this.id= id;
+	public Piloto(String nome, Precos tarif){
+		this.nome = nome;
 		this.tarif = tarif;
-		this.saldo = saldo;
+		this.id = Piloto.pilotcount++;
+	}
+	
+	/**
+	 * Devolve o nome do piloto
+	 * @return 
+	 */
+	public String getNome(){
+		return nome;
 	}
 
 	/**
@@ -40,44 +45,43 @@ public class Piloto {
 	}
 
 	/**
-	 * Devolve o tarifário aplicada ao piloto
-	 * @return o tarifário aplicado ao piloto
+	 * Devolve a assinatura aplicada ao piloto
+	 * @return assinatura
 	 */
-	public Precos getTarifario() {
+	public Precos getAssinatura() {
 		return tarif;
 	}
 
 	/**
-	 * Aplica um novo tarifário ao utilizador
+	 * Aplica um novo tipo de assinatura ao piloto
 	 * @param tarif novo tarifário a aplicar
 	 */
-	public void setTarifario(Precos tarif) {
+	public void setAssinatura(Precos tarif) {
 		this.tarif = tarif;
 	}
 
 	/**
-	 * devolve o saldo do utilizador
-	 * @return o número de voltas ainda permitidas ao utilizador
+	 * Número de voltas ainda permitidas ao piloto
+	 * @return o número de voltas
 	 */
-	public long getSaldo() {
-		return saldo;
-	}
-
-	/**
-	 * altera o saldo 
-	 * @param saldo
-	 */
-	public void setSaldo(int saldo) {
-            if (saldo>0) {
-                this.saldo = saldo;
-            }
+	public long getAvVoltas() {
+		return tarif.getAvVoltas();
 	}
 	
+	public void terminaVolta(Volta volta){
+		tarif.finalizaVolta(volta);
+	}
 	
+	public void finalizaMes(){
+		tarif.finalizaMes();
+	}
+	@Override
 	public String toString(){
-		return "Piloto: " + id + "\n" +
-				"Tarifario: " + tarif.getNome() + "\n" +
-				"Saldo: " + saldo + " voltas\n";
+		Volta v = tarif.getMelhorVolta();
+		return "Piloto: [" + id + "] " + nome + "\n" +
+				"Melhor Tempo: " + v.getTempo() + " no kart [" +v.getKartID()+ "]\n" +
+				"Tipo de Assinatura: " + tarif.getNome() + "\n" +
+				"Voltas disponíveis: " + tarif.getAvVoltas() + " voltas.\n";
 	}
     
 }
