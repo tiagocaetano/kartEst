@@ -90,7 +90,8 @@ public class Piloto {
 		return "Piloto: [" + id + "] " + nome + "\n" +
 				"Melhor Tempo: " + v.getTempo() + " no kart [" +v.getKartID()+ "]\n" +
 				"Tipo de Assinatura: " + tarif.getNome() + "\n" +
-				"Voltas disponíveis: " + tarif.getAvVoltas() + " voltas.\n";
+				"Voltas disponíveis: " + tarif.getAvVoltas() + " voltas.\n" +
+				tarif.toString();
 	}
     
 }

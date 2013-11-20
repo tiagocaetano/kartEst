@@ -15,6 +15,10 @@ public class Kart {
 		this.kartid = id;
 	}
 	
+	public int getId(){ return kartid; }
+	
+	public Boolean temPiloto(){ return (piloto == null); }
+	
 	public boolean assignPiloto(Piloto piloto){
 		if (piloto.iniciaProva()) {
 			this.piloto = piloto;
@@ -23,8 +27,6 @@ public class Kart {
 			return false;
 		}
 	}
-	
-	public int getId(){ return kartid; }
 	
 	public void removePiloto(){
 		piloto.terminaProva();
