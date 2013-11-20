@@ -2,11 +2,7 @@ package kartodromo;
 
 import Precos.*;
 import consola.SConsola;
-import java.util.HashMap;
-import java.util.ArrayList;
-import java.util.Queue;
-import java.util.LinkedList;
-import java.util.Map;
+import java.util.*;
 /**
  * esta classe representa o kartodromo com os seus karts, pilotos, etc
  */
@@ -16,9 +12,9 @@ public class Kartodromo {
 	private SConsola oMenu;			// Menu da Aplicação
 	
 	private int maxKart;
-	private Map<Integer, Piloto> pilotos = new HashMap<>();	// Lista de Pilotos registados incluindo piloto 'zero'
-	private Map<Integer, Kart> kPark = new HashMap<>();		// Karts disponíveis no parque
-	private Queue<Kart> kRunn = new LinkedList<>();			// Karts em prova
+	private Map<Integer, Piloto> pilotos = new HashMap<>();		// Lista de Pilotos registados incluindo piloto 'zero'
+	private Map<Integer, Kart> kPark = new HashMap<>();			// Karts disponíveis no parque
+	private Queue<Kart> kRunn = new LinkedList<>();				// Karts em prova
 	
 	
 	/**
@@ -152,25 +148,24 @@ public class Kartodromo {
 	 * @return Kart selecionado
 	 */
 	private Kart pedirKart(){
-		Piloto op;
-		String str = "";
-		oMenu.println("====   PARQUE de KARTS   ====");
+		Kart k;
+		oMenu.println("    ====   PARQUE de KARTS   ====");
 		for (int i=0; i<maxKart; i++) {			
-			str+= String.format("   > %02d  %12s", i, 
-					(kPark.get(i).temPiloto() ? "EM PROVA" : "DISPONÍVEL"));
+			oMenu.println(String.format("    > %02d  %12s", i, 
+					(kPark.get(i).temPiloto() ? "EM PROVA" : "DISPONÍVEL")));
 		}
 		
 		do{
-			oMenu.print("\nIntroduza o número do kart que pretende: ");
-			op = pilotos.get(oMenu.readInt());
-			if (op == null)
+			oMenu.print("\nEscolha um dos karts disponíveis: ");
+			k = kPark.get(oMenu.readInt());
+			if (k == null)
 				oMenu.print("OPÇÃO INVÁLIDA");
-		} while (op == null);
+		} while (k == null);
 		
-		return op;
+		return k;
 	}
 	/**
-	 * cria um novo aluguer
+	 * Cria um novo aluguer
 	 */
 	private void novoAluguer() {
 		oMenu.clear();		
@@ -184,25 +179,10 @@ public class Kartodromo {
 		oMenu.println( "Vai custar : " + p.getCusto(nVoltas) );
 		oMenu.println( "Prosseguir (s)? " );
 		char op = Character.toUpperCase( oMenu.readChar() );
-		if( op != 'S' )
-			return;
-
-		
-		do {
-			oMenu.println("Karts Livres: ");
-			// apresentar karts livres
-			// apresentar karts livres
-
-			oMenu.println("Número do kart? ");
-			int kart = oMenu.readInt();
-			
-			if( false /*kart não existe ou está indisponível */ )
-				oMenu.println("Kart não disponível, escolha um disponível");
-		} while( false /*kart não existe ou está indisponível */ );
-		
-		// começar o aluguer do kart pelo piloto
-		// começar o aluguer do kart pelo piloto
-		// começar o aluguer do kart pelo piloto		
+		if ( op == 'S') {
+			Kart k = pedirKart();
+			k.assignPiloto(p);
+		}
 	}
 
 	/**
@@ -210,12 +190,15 @@ public class Kartodromo {
 	 */
 	private void verKartsAlugados() {
 		oMenu.clear();
-		oMenu.println("Karts alugados - <Número de karts alugados>" );
 		
-		/* para todos os karts alugados */ {
-			oMenu.println( "Kart: <Número>" + " piloto: <Nome>" + 
-					          "  voltas pedidas: <Número>" + "  dadas: <Número>" );			
+		synchronized(kRunn){
+			oMenu.println("Karts alugados - " + kRunn.size() );
+			Iterator<Kart> karts = kRunn.iterator();
+			while (karts.hasNext()){
+				karts.next().toString();
+			}
 		}
+		
 		oMenu.readLine();
 	}
 

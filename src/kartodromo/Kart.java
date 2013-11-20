@@ -38,4 +38,12 @@ public class Kart {
 			piloto.terminaVolta(volta);
 		}
 	}
+	
+	@Override public String toString(){
+		String str = String.format(" Kart [ %02d ]", kartid);
+		if (piloto != null) {
+			str += String.format(" - Piloto [ %02d ] %s", piloto.getId(), piloto.getNome());
+		}
+		return str;
+	}
 }
