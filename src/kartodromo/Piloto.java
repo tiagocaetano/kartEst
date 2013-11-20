@@ -15,7 +15,7 @@ public class Piloto {
 	private short id;								// Número do piloto
 	private String nome;							// Nome do piloto
 	private Precos tarif;
-	private boolean aCorrer = false;				// Indicação se o utilizador está prova
+	private boolean emProva = false;				// Indicação se o utilizador está prova
 
 	/**
 	 * Cria um Piloto
@@ -64,17 +64,26 @@ public class Piloto {
 	 * Número de voltas ainda permitidas ao piloto
 	 * @return o número de voltas
 	 */
-	public long getAvVoltas() {
-		return tarif.getAvVoltas();
+	public long getAvVoltas() { return tarif.getAvVoltas(); }
+	
+	public double getCusto(int nVoltas){ return tarif.getCusto(nVoltas); }
+	
+	public void terminaVolta(Volta volta){ tarif.finalizaVolta(volta); }
+	
+	public boolean estaEmProva(){ return emProva; } 
+	
+	public boolean iniciaProva(){ 
+		if (emProva) {
+			return false;
+		} else {
+			return (emProva = true);
+		}
 	}
 	
-	public void terminaVolta(Volta volta){
-		tarif.finalizaVolta(volta);
-	}
+	public void terminaProva(){ emProva = false; }
 	
-	public void finalizaMes(){
-		tarif.finalizaMes();
-	}
+	public void finalizaMes(){	tarif.finalizaMes(); }
+	
 	@Override
 	public String toString(){
 		Volta v = tarif.getMelhorVolta();

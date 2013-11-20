@@ -8,19 +8,26 @@ import Precos.Volta;
 
 public class Kart {
 	private Piloto piloto;
-	private static int count=0;
-	private int kartID;
+	private int kartid;
 	
-	public Kart(){
+	public Kart(int id){
 		piloto = null;
-		kartID = Kart.count++;
+		this.kartid = id;
 	}
 	
-	public void assignPiloto(Piloto piloto){
-		this.piloto = piloto;
+	public boolean assignPiloto(Piloto piloto){
+		if (piloto.iniciaProva()) {
+			this.piloto = piloto;
+			return true;
+		} else {
+			return false;
+		}
 	}
+	
+	public int getId(){ return kartid; }
 	
 	public void removePiloto(){
+		piloto.terminaProva();
 		this.piloto = null;
 	}
 	
