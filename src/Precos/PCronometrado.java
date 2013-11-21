@@ -6,18 +6,15 @@ package Precos;
  */
 public class PCronometrado extends PFrequente {
 	
-	@Override
-	public String getNome(){
+	@Override public String getNome(){
 		return "Cronometrado";
 	}
 
-	@Override
-	public double getCusto(int voltas) {
+	@Override public double getCusto(int voltas) {
 		return voltas + 1;
 	}
 
-	@Override
-	public void alugarVoltas(int voltas) throws PrecosException {
+	@Override public void alugarVoltas(int voltas) throws PrecosException {
 		super.alugarVoltas(voltas);
 		clearTempos();
 	}

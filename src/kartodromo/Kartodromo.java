@@ -19,9 +19,8 @@ public class Kartodromo {
 	
 	private GeradoraTempos gt = new GeradoraTempos();
 	
-	
 	/**
-	 * Inicializa o kartódromo, criando os karts e o piloto não registado
+	 * Inicializa o kartódromo, criando os karts, o piloto não registado 
 	 */
 	public Kartodromo(){
 		// Cria 15 karts com os números do 1 ao 15
@@ -32,7 +31,7 @@ public class Kartodromo {
 		
 		/**
 		 * Criar o piloto não registado, ao
-		 * primeiro piloto é-lhe atribuido o número 0
+		 * primeiro piloto é-lhe atribuído o número 0
 		 */
 		Piloto p = new Piloto("Default", new PDefault());
 		pilotos.put(p.getId(), p);
@@ -43,7 +42,7 @@ public class Kartodromo {
 	}
     
 	/** 
-	 * método que apresenta o menu principal da aplicação
+	 * Apresenta o menu principal da aplicação
 	 */
 	final public void iniciaMenu(){
 		String menu = "Karts na EST - aluguer de karts\n\n" + 
@@ -52,11 +51,11 @@ public class Kartodromo {
 		              "K - ver Karts alugados\n" + 
 		              "V - Ver piloto\n" + 
 		              "F - Fechar mês\n" +
-		              "X - sair\n";
+		              "X - sair\n\n:>";
 		char op;
 		do {
 			oMenu.clear();
-			oMenu.println( menu );
+			oMenu.print( menu );
 			op = Character.toUpperCase( oMenu.readChar() );
 			switch( op ){
 				case 'P':
@@ -79,7 +78,7 @@ public class Kartodromo {
 					oPainel.close();
 					break;
 				default:
-					oMenu.print("    :>Opção Inválida");
+					oMenu.println("    Opção Inválida");
 					break;
 			}
 		} while( op != 'X');
@@ -94,7 +93,9 @@ public class Kartodromo {
 		oPainel = new SConsola("EST.Karts - Voltas", 300, 500);
 		oPainel.setPosition(600, 100);
 		
-		// Inicia a thread que vai atribuir o tempo das voltas
+		/**
+		 * Inicia a thread que vai atribuir o tempo das voltas
+		 */
         gt.start();
 	}
 	
@@ -171,8 +172,9 @@ public class Kartodromo {
 		do{
 			oMenu.print("\nEscolha um dos karts disponíveis: ");
 			k = kPark.get(oMenu.readInt());
-			if (k == null)
+			if (k == null) {
 				oMenu.print("OPÇÃO INVÁLIDA");
+			}
 		} while (k == null);
 		
 		return k;
@@ -202,16 +204,23 @@ public class Kartodromo {
 			oMenu.clear();
 			Kart k = pedirKart();
 			k.assignPiloto(p, nVoltas);
-			kRunn.add(k);
+			synchronized(kRunn){
+				kRunn.add(k);
+				kRunn.notify(); // Indica à thread que foi adicionado um elemento
+			}
 		}
 	}
 
 	/**
-	 * ver quais os karts que estão alugados
+	 * Disponibiliza a lista dos karts alugados
 	 */
 	private void verKartsAlugados() {
-		oMenu.clear();
-		
+		/**
+		 * Apesar de também se possível a consulta dos karts alugados
+		 * usando a kPark os dados dos karts em prova são recolhidos através
+		 * da pilha para garantir que os karts em prova estão em prova aquando
+		 * da visualização da informação
+		 */
 		synchronized(kRunn){
 			oMenu.println("Karts alugados - " + kRunn.size() );
 			Iterator<Kart> karts = kRunn.iterator();
@@ -223,7 +232,7 @@ public class Kartodromo {
 	}
 
 	/**
-	 *  ver as informações de um piloto
+	 *  Ver as informações de um piloto
 	 */
 	private void verPiloto() {
 		Piloto p;
@@ -252,41 +261,49 @@ public class Kartodromo {
 		oMenu.readLine();
 	}
 	
+	/**
+	 * Classe responsável por atribuir as voltas aos karts em pista e colocar os resultados no painel
+	 */
 	private class GeradoraTempos extends Thread {
-		Random gerador = new Random();
-		boolean runable = true;
+		Random gerador = new Random();		// Inicialização da classe gerado de números pseudoaleatórios
+		final static int INTERVAL = 1000;	// Intervalo entre a criação de voltas (ms)
+		boolean runnable = true;			// Variavel de controlo que permite finalizar a thread
 
 		@Override public void run() {
 			Kart k;
-			while (runable) {
+			while (runnable) {
 				/**
 				 * Gera um tempo com probabilidade normal com
 				 * um mínimo 62 segundos e máximo de 70 segundos 
 				 */
 				Double tempo = gerador.nextDouble() * 8 + 62;
 				synchronized(kRunn){
-					if (!kRunn.isEmpty()) {
-						k = kRunn.remove();
-						k.terminaVolta(tempo);
-						oPainel.println(String.format("    Kart [ %02d ] - %3.1f segundos",
-								k.getId(), tempo));
-						/**
-						 * Se ainda há voltas por fazer alinha o
-						 * kart para mais uma volta
-						 */
-						if (k.temPiloto()) {
-							kRunn.add(k);
-						}
+					if (kRunn.isEmpty()) {
+						try{ 
+							kRunn.wait();	// Para a execução da thread até que seja inserido um elemento
+						} catch (InterruptedException e) { }
 					}
+					k = kRunn.remove();		// Remove um kart da pilha
+					k.terminaVolta(tempo);
+					oPainel.println(String.format("    Kart [ %02d ] - %5.3f segundos",
+							k.getId(), tempo));
+					
+					// Se ainda há voltas por fazer alinha o kart para mais uma volta					
+					if (k.temPiloto()) {
+						kRunn.add(k);		// Reintroduz o kart na pilha
+					}
+					
 				}
 				try {
-					sleep(1000); // gera um tempo de volta por segundo
-				} catch (InterruptedException e) {
-				}
+					sleep(INTERVAL);	// pausa a thread durante o periodo definido
+				} catch (InterruptedException e) {	}
 			}
 		}
 		
-		public void termina(){ runable = false; }
+		/**
+		 * Termina 
+		 */
+		public void termina(){ runnable = false; }
     }
 
 	public static void main(String[] args) {

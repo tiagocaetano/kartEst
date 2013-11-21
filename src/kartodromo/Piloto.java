@@ -70,13 +70,28 @@ public class Piloto {
 		return tarif.getCusto(nVoltas);
 	}
 	
+	/**
+	 * Transmite ao tarifário os dados 
+	 * @param v 
+	 */
 	public void terminaVolta(Volta v){ 
 		tarif.finalizaVolta(v);
 		emProva = (tarif.getAvVoltas() > 0);
 	}
 	
+	/**
+	 * Permite saber se o piloto está em prova
+	 * Nota: como este valor é passível de ser alterado durante
+	 * execução da thread um resultado 'TRUE' poderá ser incorrecto
+	 * @return Estado do piloto
+	 */
 	public boolean estaEmProva(){ return emProva; } 
 	
+	/**
+	 * Inicia a prova do piloto
+	 * @param voltas voltas a efectuar
+	 * @return 
+	 */
 	public boolean iniciaProva(int voltas){ 
 		if (emProva) {
 			return false;
@@ -86,14 +101,20 @@ public class Piloto {
 		}
 	}
 	
+	/**
+	 * Inicia o processo de finalização do mês da assinatura
+	 * adquirida pelo piloto
+	 */
 	public void finalizaMes(){	tarif.finalizaMes(); }
 	
-	@Override
-	public String toString(){
+	/**
+	 * Representação em forma de texto do objecto
+	 * @return 
+	 */
+	@Override public String toString(){
 		String str = String.format("Piloto: [ %02d ] -- %s\n" +
-				"Tipo de Assinatura: %s\n" +
-				"Voltas grátis disponíveis: %02d voltas.\n", 
-				id, nome, tarif.getNome(), tarif.getAvVoltas());
+				"Tipo de Assinatura: %s\n", 
+				id, nome, tarif.getNome());
 		return str + tarif.toString();
 	}
     

@@ -1,11 +1,7 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
 package Precos;
 
 /**
- *
+ * Assinatura padrão para o piloto ocasional
  * @author lca
  */
 public class PDefault implements Precos{
@@ -26,65 +22,33 @@ public class PDefault implements Precos{
 	public String getNome(){
 		return "Ocasional";
 	}
+
+	@Override public final boolean mensalidade() { return pagames; }
 	
-	/**
-	 * Verifica se a mensalidade está paga
-	 * @return 
-	 */
-	public final boolean mensalidade() { return pagames; }
-	
-	/**
-	 * Custo da aquisição de voltas
-	 * @param voltas
-	 * @return 
-	 */
-	@Override
-	public double getCusto(int voltas){
-		return voltas; // 1 euro por volta
+	@Override public double getCusto(int voltas){
+		return (double) voltas; // 1 euro por volta
 	}
-	
-	/**
-	 * Devolve a melhor volta
-	 * @return 
-	 */
-	@Override
-	public final Volta getMelhorVolta() {
+
+	@Override public final Volta getMelhorVolta() {
 		return melhorVolta;
 	}
 	
-	@Override
-	public final void setMelhorVolta(Volta volta) { 
+	@Override public final void setMelhorVolta(Volta volta) { 
 		if (melhorVolta.compareTo(volta) < 0){
 			melhorVolta = volta;
 		}
 	}
 
-	/**
-	 * Voltas por fazer
-	 * @return 
-	 */
-	@Override
-	public final int getAvVoltas(){
+	@Override public final int getAvVoltas(){
 		return voltas;
 	}
-	
-	/**
-	 * Aluga voltas 
-	 * @param voltas número de voltas a alugar
-	 */
-	@Override
-	public void alugarVoltas(int voltas) {
+
+	@Override public void alugarVoltas(int voltas) {
 		pagames = false;
 		this.voltas = voltas;
 	}
-	
-	/**
-	 * Termina uma volta
-	 * @param v Dados da volta efectuada
-	 * @throws PrecosException 
-	 */
-	@Override
-	public void finalizaVolta(Volta v) throws PrecosException {
+
+	@Override public void finalizaVolta(Volta v) throws PrecosException {
 		if (voltas == 0) {
 			throw new PrecosException("Limite de voltas atingido");
 		}else {
@@ -93,11 +57,14 @@ public class PDefault implements Precos{
 		}
 	}
 	
-	@Override
-	public void finalizaMes(){ 
+	@Override public void finalizaMes(){ 
 		pagames = true;
 	}
 	
+	/**
+	 * Representação em forma de texto do objecto
+	 * @return 
+	 */
 	public String toString(){
 		String str = String.format("Melhor volta:  %3.1fs  --  Kart: %02d",
 				this.getMelhorVolta().tempo, this.getMelhorVolta().kartID);

@@ -40,6 +40,10 @@ public class Kart {
 		}
 	}
 	
+	/**
+	 * Representação em forma de texto do objecto
+	 * @return 
+	 */
 	@Override public String toString(){
 		String str = String.format(" Kart [ %02d ]", kartid);
 		if (piloto != null) {
