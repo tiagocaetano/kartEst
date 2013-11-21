@@ -84,10 +84,11 @@ public class PDefault implements Precos{
 	 * @throws PrecosException 
 	 */
 	@Override
-	public void finalizaVolta(Volta volta) throws PrecosException {
+	public void finalizaVolta(Volta v) throws PrecosException {
 		if (voltas == 0) {
-			throw new PrecosException("Limite de Voltas atingido");
+			throw new PrecosException("Limite de voltas atingido");
 		}else {
+			// setMelhorVolta(v);
 			voltas--;
 		}
 	}
@@ -98,7 +99,7 @@ public class PDefault implements Precos{
 	}
 	
 	public String toString(){
-		String str = String.format("Melhor volta:\n\t Tempo: %0.3f -- Kart: %02d",
+		String str = String.format("Melhor volta:  %3.1fs  --  Kart: %02d",
 				this.getMelhorVolta().tempo, this.getMelhorVolta().kartID);
 		return str;
 	}

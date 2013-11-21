@@ -17,7 +17,7 @@ public class Kart {
 	
 	public int getId(){ return kartid; }
 	
-	public Boolean temPiloto(){ return (piloto == null); }
+	public boolean temPiloto(){ return (piloto == null); }
 	
 	public boolean assignPiloto(Piloto piloto, int voltas){
 		if (piloto.iniciaProva(voltas)) {
@@ -28,11 +28,15 @@ public class Kart {
 		}
 	}
 	
-	public void terminaVolta(double tempo){
+	public void terminaVolta(Double tempo){
 		if (piloto != null) {
-			piloto.terminaVolta(new Volta(kartid, tempo));
-			if (!piloto.estaEmProva())
+			try{
+				piloto.terminaVolta(new Volta(kartid, tempo));
+				if (!piloto.estaEmProva())
+					this.piloto = null;
+			}catch (Exception e){
 				this.piloto = null;
+			}
 		}
 	}
 	

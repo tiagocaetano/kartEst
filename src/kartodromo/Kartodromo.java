@@ -52,7 +52,7 @@ public class Kartodromo {
 		              "K - ver Karts alugados\n" + 
 		              "V - Ver piloto\n" + 
 		              "F - Fechar mês\n" +
-		              "X - sair\n\n";
+		              "X - sair\n";
 		char op;
 		do {
 			oMenu.clear();
@@ -75,14 +75,16 @@ public class Kartodromo {
 					fecharMes();
 					break;
 				case 'X':
+					gt.termina();
+					oPainel.close();
 					break;
 				default:
-					oMenu.println("Opção Inválida\n\n");
+					oMenu.print("    :>Opção Inválida");
 					break;
 			}
 		} while( op != 'X');
 		oMenu.close();
-		oMenu = null;
+		
 	}
 	
 	/**
@@ -100,20 +102,20 @@ public class Kartodromo {
 	 * Cria um novo piloto
 	 */
 	private void criarPiloto() {
-		Piloto piloto=null;
+		Piloto piloto = null;
 		char op;
 		oMenu.clear();
-		oMenu.println("Menu de criação de piloto\n\n"); 
+		oMenu.println("Menu de criação de piloto\n"); 
 
 		oMenu.print("Nome do Piloto? ");
 		String nome = oMenu.readLine();
 		while (piloto == null) {
 			oMenu.clear();
-			oMenu.println("Menu de criação de piloto\n\n");
-			oMenu.println( "Escolha o tipo de piloto\n\n" +
+			oMenu.println("Menu de criação de piloto\n");
+			oMenu.print( "Escolha o tipo de piloto\n\n" +
 							  "    C - Cronometrado\n" + 
-							  "\tR - Regular\n" +
-							  "\tF - Frequente\n\n\n" );
+							  "    R - Regular\n" +
+							  "    F - Frequente\n\n:>" );
 
 			op = Character.toUpperCase( oMenu.readChar() );
 			switch( op ){
@@ -131,6 +133,7 @@ public class Kartodromo {
 					oMenu.readLine();
 			}
 		}
+		pilotos.put(piloto.getId(), piloto);
 		oMenu.println("Piloto criado com id: " + piloto.getId());
 		oMenu.readLine();
 	}
@@ -141,19 +144,14 @@ public class Kartodromo {
 	 */
 	private Piloto pedirPiloto(){
 		Piloto op;
-		oMenu.println("====  PILOTOS DISPONÍVEIS  ====");
+		oMenu.println("      ====  PILOTOS DISPONÍVEIS  ====");
 		for (Piloto p: pilotos.values()) {
-			if (!p.estaEmProva()) {
-				oMenu.println(String.format("    %02d - %s", p.getId(), p.getNome()));
-			}
+			oMenu.println(String.format("        [ %02d ]  %s  %s",
+					p.getId(), p.getNome(), 
+					(p.estaEmProva() ? "(em prova)" : " ")));			
 		}
-		
-		do{
-			oMenu.print("\nIntroduza o número do piloto que pretende: ");
-			op = pilotos.get(oMenu.readInt());
-			if (op == null)
-				oMenu.print("OPÇÃO INVÁLIDA");
-		} while (op == null);
+		oMenu.print("\nIntroduza o número do piloto que pretende: ");
+		op = pilotos.get(oMenu.readInt());
 		
 		return op;
 	}
@@ -165,9 +163,9 @@ public class Kartodromo {
 	private Kart pedirKart(){
 		Kart k;
 		oMenu.println("    ====   PARQUE de KARTS   ====");
-		for (int i=0; i<maxKart; i++) {			
-			oMenu.println(String.format("    > %02d  %12s", i, 
-					(kPark.get(i).temPiloto() ? "EM PROVA" : "DISPONÍVEL")));
+		for (int i=1; i<=maxKart; i++) {			
+			oMenu.println(String.format("    > %02d  %s", i, 
+					(kPark.get(i).temPiloto() ? "DISPONÍVEL" : "EM PROVA")));
 		}
 		
 		do{
@@ -187,16 +185,24 @@ public class Kartodromo {
 		oMenu.println( "Menu de criação de sessão\n\n");
 		
 		Piloto p = pedirPiloto();
+		if (p == null) {
+			// Cancela a operação
+			oMenu.print("Operação cancelada... ");
+			oMenu.readLine();
+			return;
+		}
 		
-		oMenu.println("Número de voltas? ");
+		oMenu.print("Número de voltas? ");
 		int nVoltas = oMenu.readInt();
 		
 		oMenu.println( "Vai custar : " + p.getCusto(nVoltas) );
-		oMenu.println( "Prosseguir (s)? " );
+		oMenu.print( "Prosseguir (s)? " );
 		char op = Character.toUpperCase( oMenu.readChar() );
 		if ( op == 'S') {
+			oMenu.clear();
 			Kart k = pedirKart();
 			k.assignPiloto(p, nVoltas);
+			kRunn.add(k);
 		}
 	}
 
@@ -220,8 +226,11 @@ public class Kartodromo {
 	 *  ver as informações de um piloto
 	 */
 	private void verPiloto() {
-		oMenu.clear();
-		Piloto p = pedirPiloto();
+		Piloto p;
+		do {
+			oMenu.clear();
+			p = pedirPiloto();
+		} while (p == null);
 		oMenu.println(p.toString());
 		oMenu.readLine();
 	}
@@ -245,41 +254,45 @@ public class Kartodromo {
 	
 	private class GeradoraTempos extends Thread {
 		Random gerador = new Random();
+		boolean runable = true;
 
 		@Override public void run() {
 			Kart k;
-			while (oMenu!=null) {
+			while (runable) {
 				/**
 				 * Gera um tempo com probabilidade normal com
 				 * um mínimo 62 segundos e máximo de 70 segundos 
 				 */
-				double tempo = gerador.nextDouble() * 8 + 62;
+				Double tempo = gerador.nextDouble() * 8 + 62;
 				synchronized(kRunn){
 					if (!kRunn.isEmpty()) {
 						k = kRunn.remove();
 						k.terminaVolta(tempo);
-						oPainel.println(String.format("Kart [ %02d ] - %d",
+						oPainel.println(String.format("    Kart [ %02d ] - %3.1f segundos",
 								k.getId(), tempo));
 						/**
 						 * Se ainda há voltas por fazer alinha o
 						 * kart para mais uma volta
 						 */
-						if (k.temPiloto())
+						if (k.temPiloto()) {
 							kRunn.add(k);
+						}
 					}
 				}
 				try {
-					sleep(2000); // gera voltas a cada 2 segundos
+					sleep(1000); // gera um tempo de volta por segundo
 				} catch (InterruptedException e) {
 				}
 			}
 		}
+		
+		public void termina(){ runable = false; }
     }
 
 	public static void main(String[] args) {
 		//criação do kartodromo e respectiva configuração
 		Kartodromo bigK = new Kartodromo();
-		bigK.iniciaMenu();
-		bigK.iniciaPainel();		
+		bigK.iniciaPainel();
+		bigK.iniciaMenu();	
 	}
 }

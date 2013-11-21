@@ -69,9 +69,9 @@ public class PFrequente extends PDefault{
 	public String toString(){
 		String str=super.toString();
 		
-		str += "     KART  || Tempo\n";
+		str += "\nOutras voltas efectuadas:\n     KART  || Tempo\n";
 		for(Volta v : asVoltas){
-			str += String.format("    [%02d] ||  %03ds\n", v.kartID, v.tempo);
+			str += String.format("     [%02d]  ||  %3.1fs\n", v.kartID, v.tempo);
 		}
 		
 		return str;

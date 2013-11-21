@@ -70,9 +70,9 @@ public class Piloto {
 		return tarif.getCusto(nVoltas);
 	}
 	
-	public void terminaVolta(Volta volta){ 
-		tarif.finalizaVolta(volta);
-		emProva = (tarif.getAvVoltas() == 0);
+	public void terminaVolta(Volta v){ 
+		tarif.finalizaVolta(v);
+		emProva = (tarif.getAvVoltas() > 0);
 	}
 	
 	public boolean estaEmProva(){ return emProva; } 
@@ -90,12 +90,11 @@ public class Piloto {
 	
 	@Override
 	public String toString(){
-		Volta v = tarif.getMelhorVolta();
-		return "Piloto: [" + id + "] " + nome + "\n" +
-				"Melhor Tempo: " + v.getTempo() + " no kart [" +v.getKartID()+ "]\n" +
-				"Tipo de Assinatura: " + tarif.getNome() + "\n" +
-				"Voltas disponíveis: " + tarif.getAvVoltas() + " voltas.\n" +
-				tarif.toString();
+		String str = String.format("Piloto: [ %02d ] -- %s\n" +
+				"Tipo de Assinatura: %s\n" +
+				"Voltas grátis disponíveis: %02d voltas.\n", 
+				id, nome, tarif.getNome(), tarif.getAvVoltas());
+		return str + tarif.toString();
 	}
     
 }
