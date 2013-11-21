@@ -66,21 +66,25 @@ public class Piloto {
 	 */
 	public long getAvVoltas() { return tarif.getAvVoltas(); }
 	
-	public double getCusto(int nVoltas){ return tarif.getCusto(nVoltas); }
+	public double getCusto(int nVoltas){
+		return tarif.getCusto(nVoltas);
+	}
 	
-	public void terminaVolta(Volta volta){ tarif.finalizaVolta(volta); }
+	public void terminaVolta(Volta volta){ 
+		tarif.finalizaVolta(volta);
+		emProva = (tarif.getAvVoltas() == 0);
+	}
 	
 	public boolean estaEmProva(){ return emProva; } 
 	
-	public boolean iniciaProva(){ 
+	public boolean iniciaProva(int voltas){ 
 		if (emProva) {
 			return false;
 		} else {
+			tarif.alugarVoltas(voltas);
 			return (emProva = true);
 		}
 	}
-	
-	public void terminaProva(){ emProva = false; }
 	
 	public void finalizaMes(){	tarif.finalizaMes(); }
 	

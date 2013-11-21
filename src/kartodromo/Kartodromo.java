@@ -2,6 +2,7 @@ package kartodromo;
 
 import Precos.*;
 import consola.SConsola;
+import static java.lang.Thread.sleep;
 import java.util.*;
 /**
  * esta classe representa o kartodromo com os seus karts, pilotos, etc
@@ -16,32 +17,35 @@ public class Kartodromo {
 	private Map<Integer, Kart> kPark = new HashMap<>();			// Karts disponíveis no parque
 	private Queue<Kart> kRunn = new LinkedList<>();				// Karts em prova
 	
+	private GeradoraTempos gt = new GeradoraTempos();
+	
 	
 	/**
 	 * Inicializa o kartódromo, criando os karts e o piloto não registado
 	 */
 	public Kartodromo(){
-		// adicionar 15 karts com os números do 1 ao 15
+		// Cria 15 karts com os números do 1 ao 15
 		maxKart = 15;
 		for (int i=1; i<=maxKart; i++) {
 			kPark.put(i, new Kart(i));
 		}
-		// criar o piloto não registado com o número 0
+		
+		/**
+		 * Criar o piloto não registado, ao
+		 * primeiro piloto é-lhe atribuido o número 0
+		 */
 		Piloto p = new Piloto("Default", new PDefault());
 		pilotos.put(p.getId(), p);
 		
-		// criação das interfaces do sistema
+		// Criação da interface do menu do sistema
 		oMenu =  new SConsola("EST.Karts - Menu", 550, 500);
 		oMenu.setPosition(20, 100);
-		menuPrincipal();
-		oPainel = new SConsola("EST.Karts - Voltas", 300, 500);
-		oPainel.setPosition(600, 100);	
 	}
     
 	/** 
 	 * método que apresenta o menu principal da aplicação
 	 */
-	public void menuPrincipal(){
+	final public void iniciaMenu(){
 		String menu = "Karts na EST - aluguer de karts\n\n" + 
 		              "P - criar novo Piloto\n" +
 		              "A - novo Aluguer\n" + 
@@ -78,11 +82,22 @@ public class Kartodromo {
 			}
 		} while( op != 'X');
 		oMenu.close();
-		System.exit( 0 );	             
+		oMenu = null;
 	}
 	
 	/**
-	 * cria um novo piloto
+	 * Inicia o painel onde serão colocados os tempos dos karts em prova
+	 */
+	final public void iniciaPainel(){
+		oPainel = new SConsola("EST.Karts - Voltas", 300, 500);
+		oPainel.setPosition(600, 100);
+		
+		// Inicia a thread que vai atribuir o tempo das voltas
+        gt.start();
+	}
+	
+	/**
+	 * Cria um novo piloto
 	 */
 	private void criarPiloto() {
 		Piloto piloto=null;
@@ -181,7 +196,7 @@ public class Kartodromo {
 		char op = Character.toUpperCase( oMenu.readChar() );
 		if ( op == 'S') {
 			Kart k = pedirKart();
-			k.assignPiloto(p);
+			k.assignPiloto(p, nVoltas);
 		}
 	}
 
@@ -197,8 +212,7 @@ public class Kartodromo {
 			while (karts.hasNext()){
 				karts.next().toString();
 			}
-		}
-		
+		}		
 		oMenu.readLine();
 	}
 
@@ -229,9 +243,43 @@ public class Kartodromo {
 		oMenu.readLine();
 	}
 	
-    public static void main(String[] args) {
+	private class GeradoraTempos extends Thread {
+		Random gerador = new Random();
+
+		@Override public void run() {
+			Kart k;
+			while (oMenu!=null) {
+				/**
+				 * Gera um tempo com probabilidade normal com
+				 * um mínimo 62 segundos e máximo de 70 segundos 
+				 */
+				double tempo = gerador.nextDouble() * 8 + 62;
+				synchronized(kRunn){
+					if (!kRunn.isEmpty()) {
+						k = kRunn.remove();
+						k.terminaVolta(tempo);
+						oPainel.println(String.format("Kart [ %02d ] - %d",
+								k.getId(), tempo));
+						/**
+						 * Se ainda há voltas por fazer alinha o
+						 * kart para mais uma volta
+						 */
+						if (k.temPiloto())
+							kRunn.add(k);
+					}
+				}
+				try {
+					sleep(2000); // gera voltas a cada 2 segundos
+				} catch (InterruptedException e) {
+				}
+			}
+		}
+    }
+
+	public static void main(String[] args) {
 		//criação do kartodromo e respectiva configuração
-		new Kartodromo();
-		
+		Kartodromo bigK = new Kartodromo();
+		bigK.iniciaMenu();
+		bigK.iniciaPainel();		
 	}
 }
