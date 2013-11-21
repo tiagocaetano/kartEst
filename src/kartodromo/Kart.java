@@ -17,7 +17,7 @@ public class Kart {
 	
 	public int getId(){ return kartid; }
 	
-	public boolean temPiloto(){ return (piloto == null); }
+	public boolean temPiloto(){ return (piloto != null); }
 	
 	public boolean assignPiloto(Piloto piloto, int voltas){
 		if (piloto.iniciaProva(voltas)) {

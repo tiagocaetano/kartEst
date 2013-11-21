@@ -54,7 +54,7 @@ public class PDefault implements Precos{
 	
 	@Override
 	public final void setMelhorVolta(Volta volta) { 
-		if (melhorVolta.compareTo(volta) > 0){
+		if (melhorVolta.compareTo(volta) < 0){
 			melhorVolta = volta;
 		}
 	}
@@ -80,7 +80,7 @@ public class PDefault implements Precos{
 	
 	/**
 	 * Termina uma volta
-	 * @param volta Dados da volta efectuada
+	 * @param v Dados da volta efectuada
 	 * @throws PrecosException 
 	 */
 	@Override
