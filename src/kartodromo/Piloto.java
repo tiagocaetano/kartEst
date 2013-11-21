@@ -32,42 +32,28 @@ public class Piloto {
 	 * Devolve o nome do piloto
 	 * @return 
 	 */
-	public String getNome(){
-		return nome;
-	}
+	public String getNome(){ return this.nome; }
 
 	/**
 	 * Devolve o número do piloto
 	 * @return o número do piloto
 	 */
-	public int getId() {
-		return id;
-	}
-
-	/**
-	 * Devolve a assinatura aplicada ao piloto
-	 * @return assinatura
-	 */
-	public Precos getAssinatura() {
-		return tarif;
-	}
+	public int getId() { return this.id;	}
 
 	/**
 	 * Aplica um novo tipo de assinatura ao piloto
 	 * @param tarif novo tarifário a aplicar
 	 */
-	public void setAssinatura(Precos tarif) {
-		this.tarif = tarif;
-	}
+	public void setAssinatura(Precos tarif) {	this.tarif = tarif;	}
 
 	/**
 	 * Número de voltas ainda permitidas ao piloto
 	 * @return o número de voltas
 	 */
-	public long getAvVoltas() { return tarif.getAvVoltas(); }
+	public int getAvVoltas() { return this.tarif.getAvVoltas(); }
 	
 	public double getCusto(int nVoltas){
-		return tarif.getCusto(nVoltas);
+		return this.tarif.getCusto(nVoltas);
 	}
 	
 	/**
@@ -75,8 +61,8 @@ public class Piloto {
 	 * @param v 
 	 */
 	public void terminaVolta(Volta v){ 
-		tarif.finalizaVolta(v);
-		emProva = (tarif.getAvVoltas() > 0);
+		this.tarif.finalizaVolta(v);
+		this.emProva = (this.tarif.getAvVoltas() > 0);
 	}
 	
 	/**

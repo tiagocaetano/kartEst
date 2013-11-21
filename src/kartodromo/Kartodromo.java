@@ -5,7 +5,7 @@ import consola.SConsola;
 import static java.lang.Thread.sleep;
 import java.util.*;
 /**
- * esta classe representa o kartodromo com os seus karts, pilotos, etc
+ * Esta classe representa o kartodromo com os seus karts, pilotos, etc
  */
 public class Kartodromo {
 
@@ -166,7 +166,7 @@ public class Kartodromo {
 		oMenu.println("    ====   PARQUE de KARTS   ====");
 		for (int i=1; i<=maxKart; i++) {			
 			oMenu.println(String.format("    > %02d  %s", i, 
-					(kPark.get(i).temPiloto() ? "DISPONÍVEL" : "EM PROVA")));
+					(kPark.get(i).temPiloto() ? "EM PROVA" : "DISPONÍVEL")));
 		}
 		
 		do{
