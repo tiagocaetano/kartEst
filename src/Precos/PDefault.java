@@ -66,7 +66,7 @@ public class PDefault implements Precos{
 	 * @return 
 	 */
 	public String toString(){
-		String str = String.format("Melhor volta:  %3.1fs  --  Kart: %02d",
+		String str = String.format("Melhor volta:  %5.3fs  --  Kart: %02d",
 				this.getMelhorVolta().tempo, this.getMelhorVolta().kartID);
 		return str;
 	}

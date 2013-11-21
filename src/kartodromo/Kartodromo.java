@@ -266,7 +266,7 @@ public class Kartodromo {
 	 */
 	private class GeradoraTempos extends Thread {
 		Random gerador = new Random();		// Inicialização da classe gerado de números pseudoaleatórios
-		final static int INTERVAL = 1000;	// Intervalo entre a criação de voltas (ms)
+		final static int INTERVAL = 3000;	// Intervalo entre a criação de voltas (ms)
 		boolean runnable = true;			// Variavel de controlo que permite finalizar a thread
 
 		@Override public void run() {
@@ -281,6 +281,7 @@ public class Kartodromo {
 					if (kRunn.isEmpty()) {
 						try{ 
 							kRunn.wait();	// Para a execução da thread até que seja inserido um elemento
+							continue;		// Retorna ao ciclo para se certificar que a thread ainda é executável
 						} catch (InterruptedException e) { }
 					}
 					k = kRunn.remove();		// Remove um kart da pilha
@@ -303,7 +304,12 @@ public class Kartodromo {
 		/**
 		 * Termina 
 		 */
-		public void termina(){ runnable = false; }
+		public void termina(){ 
+			runnable = false;
+			synchronized(kRunn){
+				kRunn.notify();
+			}
+		}
     }
 
 	public static void main(String[] args) {

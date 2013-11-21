@@ -71,7 +71,7 @@ public class PFrequente extends PDefault{
 		
 		str += "\nOutras voltas efectuadas:\n     KART  || Tempo\n";
 		for(Volta v : asVoltas){
-			str += String.format("     [%02d]  ||  %3.1fs\n", v.kartID, v.tempo);
+			str += String.format("     [%02d]  ||  %5.3fs\n", v.kartID, v.tempo);
 		}
 		
 		return str;
