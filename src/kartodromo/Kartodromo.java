@@ -4,6 +4,7 @@ import Precos.*;
 import consola.SConsola;
 import static java.lang.Thread.sleep;
 import java.util.*;
+
 /**
  * Esta classe representa o kartodromo com os seus karts, pilotos, etc
  */
@@ -316,6 +317,6 @@ public class Kartodromo {
 		//criação do kartodromo e respectiva configuração
 		Kartodromo bigK = new Kartodromo();
 		bigK.iniciaPainel();
-		bigK.iniciaMenu();	
+		bigK.iniciaMenu();
 	}
 }

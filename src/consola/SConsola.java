@@ -1,15 +1,15 @@
 /*
     Esta classe representa uma Janela de consola que permite ao
     utilizador escrever nela. Permite ao programador escrever e
-    limpar o seu conteúdo.
+    limpar o seu conteÃºdo.
     Utiliza a classe ConsolePanel desenvolvida por David Eck 
     
-    Autor:  F. Sérgio Barbosa 
-            Departmento de Engª das Tecnologias da Informação
+    Autor:  F. SÃ©rgio Barbosa 
+            Departmento de EngÂª das Tecnologias da InformaÃ§Ã£o
             Escola Superior de Tecnologia de CAstelo Branco
             email:  fsergio@est.ipcb.pt
 
-    Criada em 27 de Março de 2007.
+    Criada em 27 de MarÃ§o de 2007.
 */
 
 package consola;

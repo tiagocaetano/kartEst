@@ -10,10 +10,6 @@ public class PCronometrado extends PFrequente {
 		return "Cronometrado";
 	}
 
-	@Override public double getCusto(int voltas) {
-		return voltas + 1;
-	}
-
 	@Override public void alugarVoltas(int voltas) throws PrecosException {
 		super.alugarVoltas(voltas);
 		clearTempos();
