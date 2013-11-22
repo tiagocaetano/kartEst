@@ -3,28 +3,28 @@
 <precos>
 	<tarifario nome="Ocasional">
 		<bonus>0</bonus>
-                <lfbonus>0</lfbonus>
+		<lfbonus>0</lfbonus>
 		<volta>1</volta>
 		<taxas>0</taxas>
 		<mensalidade>0</mensalidade>
 	</tarifario>
 	<tarifario nome="Cronometrado">
 		<bonus>0</bonus>
-                <lfbonus>0</lfbonus>
+		<lfbonus>0</lfbonus>
 		<volta>1</volta>
 		<taxas>1</taxas>
 		<mensalidade>0</mensalidade>
 	</tarifario>
 	<tarifario nome="Regular">
 		<bonus>2</bonus>
-                <lfbonus>10</lfbonus>
+		<lfbonus>10</lfbonus>
 		<volta>1</volta>
 		<taxas>0</taxas>
 		<mensalidade>10</mensalidade>
 	</tarifario>
 	<tarifario nome="Frequente">
 		<bonus>200</bonus>
-                <lfbonus>0</lfbonus>
+		<lfbonus>0</lfbonus>
 		<volta>1</volta>
 		<taxas>0</taxas>
 		<mensalidade>130</mensalidade>

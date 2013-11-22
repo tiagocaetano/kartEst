@@ -19,9 +19,16 @@ public class PFrequente extends PDefault{
 	public String getNome(){
 		return "Frequente";
 	}
+	
+	@Override public Precario getDefaultPrecario(){
+		Precario tprecos = new Precario(this.getNome());		// Tabela de Preços
+		tprecos.setPVolta(1.0);
+		tprecos.setMensalidade(130.0);
+		tprecos.setBonus(200);
+		return tprecos;
+	}
 
-	@Override
-	public void finalizaVolta(Volta volta) throws PrecosException {
+	@Override public void finalizaVolta(Volta volta) throws PrecosException {
 		super.finalizaVolta(volta);
 		setMelhorVolta(volta);
 		asVoltas.add(volta);
@@ -37,10 +44,12 @@ public class PFrequente extends PDefault{
 	@Override
 	public String toString(){
 		String str=super.toString();
-		
-		str += "\nOutras voltas efectuadas:\n     KART  || Tempo\n";
+		boolean odd=true;
+		str += "\nOutras voltas efectuadas:\n     KART  ||   Tempo      KART  ||   Tempo\n";
 		for(Volta v : asVoltas){
-			str += String.format("     [%02d]  ||  %5.3fs\n", v.kartID, v.tempo);
+			str += String.format("     [%02d]  ||  %5.3fs", v.kartID, v.tempo);
+			str += ( odd ? "\n" : " ");
+			odd = !odd;
 		}
 		
 		return str;

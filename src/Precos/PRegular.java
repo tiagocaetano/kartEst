@@ -15,6 +15,15 @@ public class PRegular extends PFrequente {
 		return "Regular";
 	}
 	
+	@Override public Precario getDefaultPrecario(){
+		Precario tprecos = new Precario(this.getNome());		// Tabela de Preços
+		tprecos.setPVolta(1.0);
+		tprecos.setMensalidade(10.0);
+		tprecos.setlfBonus(10);			// Condição de voltas por aluguer
+		tprecos.setBonus(2);			// voltas grátis
+		return tprecos;
+	}
+	
 	@Override
 	public void finalizaMes(){
 		super.finalizaMes();

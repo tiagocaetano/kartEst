@@ -20,12 +20,31 @@ public interface Precos {
 	public boolean mensalidade();
 	
 	/**
+	 * Caso a aplicação não consiga recolher os dados da tabela de
+	 * preços pode ainda assim calcular o preço com valores padrão
+	 * @return o preçário de fábrica
+	 */
+	public Precario getDefaultPrecario();
+	
+	/**
 	 * Custo das voltas requeridas se há lugar a pagamento da mensalidade esse
 	 * valor é adicionado ao custo total
 	 * @param voltas
 	 * @return 
 	 */
 	public double getCusto(int voltas);
+	
+	/**
+	 * Devolve o número de voltas grátis
+	 * @return 
+	 */
+	public int getBonus();
+	
+	/**
+	 * Atribui um bónus de voltas grátis
+	 * @return TRUE se alteração efectuada
+	 */
+	public boolean setBonus(int bonus);
 	
 	/**
 	 * Devolve a melhor volta
@@ -36,8 +55,9 @@ public interface Precos {
 	/**
 	 * Define a melhor volta
 	 * @param volta 
+	 * @return TRUE se alteração efectuada
 	 */
-	public void setMelhorVolta(Volta volta);
+	public boolean setMelhorVolta(Volta volta);
 	
 	/**
 	 * Voltas por efectuar

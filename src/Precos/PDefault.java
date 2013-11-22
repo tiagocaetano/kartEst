@@ -4,82 +4,88 @@ package Precos;
  * Assinatura padrão para o piloto ocasional
  * @author lca
  */
-public class PDefault implements Precos{
+public abstract class PDefault implements Precos{
 	
 	private Volta melhorVolta;
 	private int voltas;
-	private int bonuslaps=0;
+	private int bonuslaps;
 	private boolean pagames;
+	private Precario tprecos;
 	
 	public PDefault(){
-		melhorVolta = new Volta(0, 999.999);
-		pagames = true;
-	}
-	
-	/**
-	 * Nome da Assinatura
-	 * @return 
-	 */
-	@Override
-	public String getNome(){
-		return "Ocasional";
-	}
-
-	@Override public final boolean mensalidade() { return pagames; }
-	
-	@Override public double getCusto(int voltas){
-		Precario p;
+		this.melhorVolta = new Volta(0, 999.999);
+		this.pagames = true;
+		this.bonuslaps = 0;
 		try{
-			p = MeusPrecos.getInstance().getPrecario(this.getNome());
-		} catch (Exception e) {
-			return (double) voltas; // 1 euro por volta
+			this.tprecos = MeusPrecos.getInstance().getPrecario(getNome());
+		} catch (Exception e) {	
+			this.tprecos = getDefaultPrecario();
 		}
+	}
+	
+	@Override public abstract String getNome();
+
+	@Override public boolean mensalidade() { return pagames; }
+	
+	@Override public abstract Precario getDefaultPrecario();
+	
+	@Override public double getCusto(int voltas){		
 		int bvoltas=0;
 		double total;
-		if(p.getlfBonus() > 0 && p.getBonus()>0){
-			bvoltas = voltas / p.getlfBonus() * p.getBonus();
-		} else if (p.getlfBonus() == 0 && p.getBonus()>0){
-			if(!mensalidade()){
-				voltas = ( p.getBonus() >= voltas ? 0 : voltas-p.getBonus() );
+		if(tprecos.getlfBonus() > 0 && tprecos.getBonus()>0){
+			bvoltas = voltas / tprecos.getlfBonus() * tprecos.getBonus();
+		} else if (tprecos.getlfBonus() == 0 && tprecos.getBonus()>0){
+			if(mensalidade()){
+				bvoltas = tprecos.getBonus();
 			} else {
-				voltas = ( bonuslaps >= voltas ? 0 : voltas-bonuslaps );
+				bvoltas = getBonus();
 			}
 		}
 		
-		total = (voltas - bvoltas) * p.getPVolta() + p.getPTaxa();
+		if (bvoltas >= voltas){
+			total = tprecos.getPTaxa();
+		} else{
+			total = (voltas - bvoltas) * tprecos.getPVolta() + tprecos.getPTaxa();
+		}
+		
 		if (mensalidade()){
-			total += p.getMensalidade();
+			total += tprecos.getMensalidade();
 		}
 		return total;
 	}
-
-	@Override public final Volta getMelhorVolta() {
-		return melhorVolta;
-	}
 	
-	@Override public final void setMelhorVolta(Volta volta) { 
+	@Override public int getBonus(){ return this.bonuslaps; }
+	
+	@Override public boolean setBonus(int bonus){ 		
+		/* Não permite alterar as voltas grátis se existir 
+		 * uma condição de voltas grátis por aluguer */
+		if (tprecos.getlfBonus() > 0) {
+			return false;
+		} else {
+			this.bonuslaps = bonus;
+			return true;
+		}
+	}
+
+	@Override public Volta getMelhorVolta() { return melhorVolta; }
+	
+	@Override public boolean setMelhorVolta(Volta volta) { 
 		if (melhorVolta.compareTo(volta) < 0){
 			melhorVolta = volta;
+			return true;
 		}
+		return false;
 	}
 
-	@Override public final int getAvVoltas(){
-		return voltas;
-	}
+	@Override public int getAvVoltas(){	return voltas;	}
 
 	@Override public void alugarVoltas(int voltas) {
-		if (mensalidade()){
-			Precario p;
-			try{
-				p = MeusPrecos.getInstance().getPrecario(this.getNome());
-				if (p.getlfBonus() == 0 && p.getBonus()>0){
-					bonuslaps = ( p.getBonus() <= voltas ? 0 : p.getBonus()-voltas );
-				}
-			} catch (Exception e) {	}
+		if (this.pagames){
+			setBonus( tprecos.getBonus() <= voltas ? 0 : tprecos.getBonus()-voltas );
+			this.pagames = false;
 		} else {
-			bonuslaps = ( bonuslaps <= voltas ? 0 : bonuslaps - voltas );
-		}
-		pagames = false;
+			setBonus( getBonus() <= voltas ? 0 : getBonus()-voltas );
+		}		
 		this.voltas = voltas;
 	}
 

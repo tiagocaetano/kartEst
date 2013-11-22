@@ -34,7 +34,7 @@ public class Kartodromo {
 		 * Criar o piloto não registado, ao
 		 * primeiro piloto é-lhe atribuído o número 0
 		 */
-		Piloto p = new Piloto("Default", new PDefault());
+		Piloto p = new Piloto("Default", new POcasional());
 		pilotos.put(p.getId(), p);
 		
 		// Criação da interface do menu do sistema
@@ -224,11 +224,12 @@ public class Kartodromo {
 		 */
 		synchronized(kRunn){
 			oMenu.println("Karts alugados - " + kRunn.size() );
-			Iterator<Kart> karts = kRunn.iterator();
-			while (karts.hasNext()){
-				karts.next().toString();
-			}
-		}		
+		}
+		for (int i=1; i<=maxKart; i++) {			
+		oMenu.println(String.format("    > %02d  %s", i, 
+				(kPark.get(i).temPiloto() ? "EM PROVA" : "DISPONÍVEL")));
+		}
+			
 		oMenu.readLine();
 	}
 

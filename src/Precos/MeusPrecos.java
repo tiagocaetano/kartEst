@@ -1,28 +1,31 @@
 
 package Precos;
 import java.io.File;
-import javax.xml.parsers.DocumentBuilderFactory;
-import javax.xml.parsers.DocumentBuilder;
-import org.w3c.dom.Document;
-import org.w3c.dom.NodeList;
-import org.w3c.dom.Node;
-import org.w3c.dom.Element;
-import java.io.File;
+import java.io.IOException;
+import java.util.HashMap;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import java.util.HashMap;
+import javax.xml.parsers.DocumentBuilder;
+import javax.xml.parsers.DocumentBuilderFactory;
+import javax.xml.parsers.ParserConfigurationException;
+import org.w3c.dom.DOMException;
+import org.w3c.dom.Document;
+import org.w3c.dom.Element;
+import org.w3c.dom.Node;
+import org.w3c.dom.NodeList;
+import org.xml.sax.SAXException;
 
 /**
  * Esta classe é responsável para ler a tabela de preços de um ficheiro e 
- * disponibilizar os valores à classe Preco.
+ * disponibilizar os valores à classe Preço.
  * @author lca
  */
-public class MeusPrecos {
+public final class MeusPrecos {
 	
 	private static MeusPrecos singleMe = null;
 	private HashMap<String,Precario> precarios = new HashMap<>();
 	
-	private MeusPrecos(){		
+	private MeusPrecos() throws PrecosException {
 		try {
 			File tprecos = new File("tprecos.xml");
 			DocumentBuilder dBuilder = DocumentBuilderFactory.newInstance().newDocumentBuilder();
@@ -53,10 +56,9 @@ public class MeusPrecos {
 					p.setPVolta(Double.parseDouble(val));
 					precarios.put(p.getNome(), p);
 				}				
-			}
-			
-		} catch (Exception ex) {
-			Logger.getLogger(MeusPrecos.class.getName()).log(Level.SEVERE, null, ex);
+			}			
+		} catch (Exception ex) { 
+			throw new PrecosException("Erro de leitura do preçário: " + ex.getMessage());
 		}
 	}
 	
@@ -67,5 +69,5 @@ public class MeusPrecos {
       return singleMe;
     }
 	
-	public Precario getPrecario(String nome) { return precarios.get(nome); }
+	public final Precario getPrecario(String nome) { return precarios.get(nome); }
 }
